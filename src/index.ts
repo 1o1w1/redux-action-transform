@@ -1,7 +1,10 @@
-export default ({ dispatch, getState }: { dispatch: any; getState: any }) => (next: any) => (
-  action: any,
-  ...params: any
-) => {
+import { Dispatch, AnyAction, MiddlewareAPI } from 'redux'
+export interface Middleware<DispatchExt = {}, S = any, D extends Dispatch = Dispatch> {
+  (api: MiddlewareAPI<D, S>): (next: Dispatch<AnyAction>) => (action: any, ...arg: any) => any
+}
+const transform: Middleware = ({ dispatch, getState }: { dispatch: any; getState: any }) => (
+  next: any
+) => (action: any, params: any) => {
   if (typeof action == 'string') {
     action = {
       type: action,
@@ -10,3 +13,4 @@ export default ({ dispatch, getState }: { dispatch: any; getState: any }) => (ne
   }
   return next(action)
 }
+export default transform
