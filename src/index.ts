@@ -6,10 +6,10 @@ const transform: Middleware = ({ dispatch, getState }: { dispatch: any; getState
   next: any
 ) => (action: any, params: any) => {
   if (typeof action == 'string') {
-    action = {
+    return next({
       type: action,
       params
-    }
+    })
   }
   return next(action)
 }
